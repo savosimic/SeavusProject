@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  web:
+
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: php734
+    depends_on:
+     - db
+    volumes:
+      - ./php:/var/www/html/
+    ports:
+      - 8888:80
+  db:
+    container_name: mysql8
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: db_test
+       MYSQL_USER: root
+       MYSQL_PASSWORD: root
+    ports:
+      - 6033:3306
+    command: --init-file /data/application/init.sql
+    volumes:
+        - ./init.sql:/data/application/init.sql
